@@ -50,7 +50,7 @@
                     <a href="#reservation" class="btn btn__reserver">
                         <i class="fa-regular fa-calendar"></i> Réserver
                     </a>
-                    <a href="#apropos" class="btn btn__realis">
+                    <a href="#apropos__realisations" class="btn btn__realis">
                         <i class="fa-regular fa-images"></i> Réalisations
                     </a>
                 </div>
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <div class="tarifs"></div>
-            <div class="apropos__realisations">
+            <div class="apropos__realisations" id="apropos__realisations">
                 <h2 class="section__titre">Nos Réalisations</h2>
                 <div id="carouselRealisations">
                     <div class="item"><img src="IMAGE/1.jpeg" alt=""></div>
@@ -116,12 +116,12 @@
             <h2 class="section__titre">Réservez Votre Séance</h2>
             <p class="reservation__desc">Contactez nous pour capturer vos plus beaux moments</p>
 
-            <form class="reservation__form">
+            <form class="reservation__form" action="https://formspree.io/f/mqpaqqdy" method="POST">
                 <div class="form__group">
                     <label for="nomcomplet">Nom Complet</label>
                     <div class="input__icon">
                         <i class="fa-regular fa-user"></i>
-                        <input type="text" id="nomcomplet" name="nom" placeholder="Votre nom complet">
+                        <input type="text" id="nomcomplet" name="nom" placeholder="Votre nom complet" required>
                     </div>
                 </div>
 
@@ -129,7 +129,7 @@
                     <label for="email">Email</label>
                     <div class="input__icon">
                         <i class="fa-regular fa-envelope"></i>
-                        <input type="email" id="email" name="email" placeholder="Votre email">
+                        <input type="email" id="email" name="email" placeholder="Votre email" required>
                     </div>
                 </div>
 
@@ -137,7 +137,7 @@
                     <label for="telephone">Téléphone</label>
                     <div class="input__icon">
                         <i class="fa-solid fa-phone"></i>
-                        <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro">
+                        <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro" required>
                     </div>
                 </div>
 
@@ -163,7 +163,7 @@
                     <label for="date">Date souhaitée</label>
                     <div class="input__icon">
                         <i class="fa-regular fa-calendar"></i>
-                        <input type="date" id="date" name="date">
+                        <input type="date" id="date" name="date" required>
                     </div>
                 </div>
 
@@ -213,6 +213,12 @@
     <a href="#reservation" class="btn__float">
         <i class="fa-regular fa-calendar"></i> <span>Réserver</span>
     </a>
+    <div class="popup" id="popup">
+    <div class="popup__content">
+        <p id="popupMessage"></p>
+        <button class="popup__close" id="popupClose">Fermer</button>
+    </div>
+</div>
 </body>
 
 </html>

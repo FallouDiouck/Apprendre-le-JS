@@ -291,52 +291,71 @@ let onReady = function () {
 
     const form = document.querySelector('.reservation__form')
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault() // empêche l'envoi et le rechargement
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault()
 
-        // Récupère les valeurs
         const nom = document.getElementById('nomcomplet').value
         const email = document.getElementById('email').value
         const telephone = document.getElementById('telephone').value
         const date = document.getElementById('date').value
 
-        // Vérifie que tous les champs sont remplis
         if (!nom || !email || !telephone || !date) {
             alert('Veuillez remplir tous les champs !')
             return
         }
 
-        // Si tout est bon
-        alert('Réservation confirmée ! Nous vous contacterons bientôt.')
-        form.reset() // vide le formulaire
+        const reponse = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+        })
+
+        const popup = document.getElementById('popup')
+const popupMessage = document.getElementById('popupMessage')
+const popupClose = document.getElementById('popupClose')
+
+// Ferme le popup
+popupClose.addEventListener('click', () => {
+    popup.classList.remove('visible')
+})
+
+// Dans le submit
+if (reponse.ok) {
+    popupMessage.textContent = 'Réservation confirmée ! Nous vous contacterons bientôt.'
+    popup.classList.add('visible')
+    form.reset()
+} else {
+    popupMessage.textContent = 'Une erreur est survenue. Veuillez réessayer !'
+    popup.classList.add('visible')
+}
     })
 
     // ── SCROLLSPY ──
-const sections = document.querySelectorAll('section[id]')
-const navAnchors = document.querySelectorAll('.nav__links a')
+    const sections = document.querySelectorAll('section[id]')
+    const navAnchors = document.querySelectorAll('.nav__links a')
 
-const scrollspy = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            // Enlève active sur tous les liens
-            navAnchors.forEach(link => link.classList.remove('active'))
-            
-            // Trouve le lien qui correspond à la section visible
-            const lienActif = document.querySelector(
-                `.nav__links a[href="#${entry.target.id}"]`
-            )
-            
-            // Ajoute active sur ce lien
-            if (lienActif) {
-                lienActif.classList.add('active')
+    const scrollspy = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Enlève active sur tous les liens
+                navAnchors.forEach(link => link.classList.remove('active'))
+
+                // Trouve le lien qui correspond à la section visible
+                const lienActif = document.querySelector(
+                    `.nav__links a[href="#${entry.target.id}"]`
+                )
+
+                // Ajoute active sur ce lien
+                if (lienActif) {
+                    lienActif.classList.add('active')
+                }
             }
-        }
+        })
+    }, {
+        threshold: 0.3 // la section doit être visible à 30%
     })
-}, {
-    threshold: 0.3 // la section doit être visible à 30%
-})
 
-sections.forEach(section => scrollspy.observe(section))
+    sections.forEach(section => scrollspy.observe(section))
 
 }
 
