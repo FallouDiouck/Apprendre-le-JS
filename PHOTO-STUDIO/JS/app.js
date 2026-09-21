@@ -357,6 +357,8 @@ if (reponse.ok) {
 
     sections.forEach(section => scrollspy.observe(section))
 
+  document.querySelector('.footer__copyright').textContent =
+  `© ${new Date().getFullYear()} Focus Events. Tous droits réservés.`
 }
 
 if (document.readyState !== 'loading') {
