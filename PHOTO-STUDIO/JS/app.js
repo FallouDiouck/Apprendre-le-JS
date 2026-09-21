@@ -1,3 +1,4 @@
+
 class Carousel {
 
     /**
@@ -39,13 +40,13 @@ class Carousel {
             return item
         })
         if (this.option.infinite) {
-            this.offset =this.option.slidesVisible * 2 - 1
+            this.offset = this.option.slidesVisible * 2 - 1
             this.items = [
-            ...this.items.slice(this.items.length - this.offset).map(item => item.cloneNode(true)),
-            ...this.items,
-            ...this.items.slice(0, this.offset).map(item => item.cloneNode(true)),
+                ...this.items.slice(this.items.length - this.offset).map(item => item.cloneNode(true)),
+                ...this.items,
+                ...this.items.slice(0, this.offset).map(item => item.cloneNode(true)),
             ]
-            this.gotoItem(this.offset,false)
+            this.gotoItem(this.offset, false)
         }
         this.items.forEach(item => this.container.appendChild(item))
         this.setStyle()
@@ -66,7 +67,7 @@ class Carousel {
                 this.prev()
             }
         })
-        if(this.option.infinite){
+        if (this.option.infinite) {
             this.container.addEventListener('transitionend', this.resetInfinite.bind(this))
         }
     }
@@ -154,13 +155,13 @@ class Carousel {
             }
         }
         let translateX = index * -100 / this.items.length
-        if(animation === false){
+        if (animation === false) {
             this.container.style.transition = 'none'
         }
         this.container.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
-        this,this.container.offsetHeight  //force repaint
+        this, this.container.offsetHeight  //force repaint
         this.currentItem = index
-        if(animation === false){
+        if (animation === false) {
             this.container.style.transition = ''
         }
         this.moveCallbacks.forEach(cb => cb(index))
@@ -169,10 +170,10 @@ class Carousel {
     /**
      * Deplace le container pour donner l'impression d'un slide infinie
      */
-    resetInfinite(){
-        if(this.currentItem <= this.option.slidesToScroll){
+    resetInfinite() {
+        if (this.currentItem <= this.option.slidesToScroll) {
             this.gotoItem(this.currentItem + (this.items.length - 2 * this.offset), false)
-        } else if (this.currentItem >= this.option.slidesToScroll){
+        } else if (this.currentItem >= this.option.slidesToScroll) {
             this.gotoItem(this.currentItem - (this.items.length - 2 * this.offset), false)
         }
     }
@@ -220,27 +221,128 @@ class Carousel {
 
 let onReady = function () {
 
-    new Carousel(document.querySelector('#carousel1'), {
-        slidesToScroll: 3,
+    const slides = document.querySelectorAll('.hero__image')
+    let current = 0
+
+    setInterval(() => {
+        slides[current].classList.remove('active')
+        current = (current + 1) % slides.length
+        slides[current].classList.add('active')
+    }, 4000)
+
+    new Carousel(document.querySelector('#carouselRealisations'), {
+        slidesToScroll: 1,
         slidesVisible: 3,
         loop: true
     })
 
-    new Carousel(document.querySelector('#carousel2'), {
-        slidesToScroll: 2,
-        slidesVisible: 2,
-        infinite: true,
-        pagination: true
+    const choixBtns = document.querySelectorAll('.choix__btn')
+
+    choixBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Enlève active sur tous
+            choixBtns.forEach(b => b.classList.remove('active'))
+            // Met active sur celui cliqué
+            btn.classList.add('active')
+        })
     })
 
-    new Carousel(document.querySelector('#carousel3'), {
-        slidesToScroll: 1,
-        slidesVisible: 1,
+    const burger = document.getElementById('burger')
+    const navLinks = document.getElementById('navLinks')
+
+    // Ouvre et ferme le menu au clic sur le burger
+    burger.addEventListener('click', () => {
+        navLinks.classList.toggle('open')
     })
+
+    // Ferme le menu quand on clique sur un lien
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open')
+        })
+    })
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible')
+            }
+        })
+    }, { threshold: 0.1 })
+
+    // On cible tous les éléments importants automatiquement
+    document.querySelectorAll(`
+    .apropos__vision,
+    .st_studio,
+    .st_domicile,
+    .st_bapteme,
+    .st_even,
+    .apropos__realisations,
+    .reservation__form,
+    .footer__logo,
+    .footer__nav,
+    .footer__contact,
+    .hero__content,
+    .section__titre
+`).forEach(el => {
+        el.classList.add('apparaitre')
+        observer.observe(el)
+    })
+
+    const form = document.querySelector('.reservation__form')
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault() // empêche l'envoi et le rechargement
+
+        // Récupère les valeurs
+        const nom = document.getElementById('nomcomplet').value
+        const email = document.getElementById('email').value
+        const telephone = document.getElementById('telephone').value
+        const date = document.getElementById('date').value
+
+        // Vérifie que tous les champs sont remplis
+        if (!nom || !email || !telephone || !date) {
+            alert('Veuillez remplir tous les champs !')
+            return
+        }
+
+        // Si tout est bon
+        alert('Réservation confirmée ! Nous vous contacterons bientôt.')
+        form.reset() // vide le formulaire
+    })
+
+    // ── SCROLLSPY ──
+const sections = document.querySelectorAll('section[id]')
+const navAnchors = document.querySelectorAll('.nav__links a')
+
+const scrollspy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Enlève active sur tous les liens
+            navAnchors.forEach(link => link.classList.remove('active'))
+            
+            // Trouve le lien qui correspond à la section visible
+            const lienActif = document.querySelector(
+                `.nav__links a[href="#${entry.target.id}"]`
+            )
+            
+            // Ajoute active sur ce lien
+            if (lienActif) {
+                lienActif.classList.add('active')
+            }
+        }
+    })
+}, {
+    threshold: 0.3 // la section doit être visible à 30%
+})
+
+sections.forEach(section => scrollspy.observe(section))
+
 }
 
 if (document.readyState !== 'loading') {
     onReady()
+} else {
+    document.addEventListener('DOMContentLoaded', onReady)
 }
 
-document.addEventListener('DOMContentLoaded', onReady)

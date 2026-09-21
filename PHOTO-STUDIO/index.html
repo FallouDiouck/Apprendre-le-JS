@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="CSS/main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<script src="JS/app.js" type="module" defer></script>
+
+<body>
+    <nav>
+        <div class="nav__logo">
+            <span id="focus">focus</span>
+            <span>events</span>
+        </div>
+        <button class="nav__burger" id="burger">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+        <div class="nav__links" id="navLinks">
+            <a href="#accueil">ACCUEIL</a>
+            <a href="#apropos">A PROPOS</a>
+            <a href="#reservation">RESRVATION</a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="accueil">
+            <div class="hero">
+                <div class="hero__slider">
+                    <img src="IMAGE/8.jpeg" class="hero__image active" alt="">
+                    <img src="IMAGE/2.jpeg" class="hero__image" alt="">
+                    <img src="IMAGE/7.jpeg" class="hero__image" alt="">
+                    <img src="IMAGE/9.jpeg" class="hero__image" alt="">
+                    <img src="IMAGE/4.jpeg" class="hero__image" alt="">
+                    <img src="IMAGE/6.jpeg" class="hero__image" alt="">
+                </div>
+            </div>
+
+            <div class="hero__content">
+                <h1><span>FOCUS</span> EVENTS</h1>
+                <p class="hero__text">
+                    Chaque moment mérite d'être immortalisé. <br>
+                    Nous transformons vos instants précieux en souvenirs éternels — <br>
+                    mariages, baptêmes, portraits et événements d'exception.
+                </p>
+                <div class="hero__buttons">
+                    <a href="#reservation" class="btn btn__reserver">
+                        <i class="fa-regular fa-calendar"></i> Réserver
+                    </a>
+                    <a href="#apropos" class="btn btn__realis">
+                        <i class="fa-regular fa-images"></i> Réalisations
+                    </a>
+                </div>
+            </div>
+        </section>
+        <section id="apropos">
+            <div class="apropos__vision">
+                <h2 class="vision__titre">
+                    La photographie n'est pas seulement une image, <br>
+                    C'est une émotion figée dans le temps.
+                </h2>
+                <p class="vision__desc">
+                    Chez Focus Events, nous croyons que chaque instant mérite
+                    d'être préservé avec soin, élégance et authenticité.
+                </p>
+            </div>
+
+            <div class="apropos__services">
+                <div class="st_studio">
+                    <i class="fa-solid fa-camera"></i>
+                    <h3>Studio</h3>
+                    <p>Séances photo professionnelles dans notre studio équipé, avec éclairage et décors adaptés à vos
+                        besoins.</p>
+                </div>
+                <div class="st_domicile">
+                    <i class="fa-solid fa-house"></i>
+                    <h3>À Domicile</h3>
+                    <p>Nous nous déplaçons chez vous pour des portraits naturels et authentiques dans votre
+                        environnement.</p>
+                </div>
+                <div class="st_bapteme">
+                    <i class="fa-solid fa-champagne-glasses"></i>
+                    <h3>Mariage & Baptême</h3>
+                    <p>Nous immortalisons vos moments les plus précieux avec élégance et discrétion.</p>
+                </div>
+                <div class="st_even">
+                    <i class="fa-solid fa-star"></i>
+                    <h3>Événement</h3>
+                    <p>Conférences, soirées, anniversaires nous couvrons tous vos événements avec professionnalisme.
+                    </p>
+                </div>
+            </div>
+            <div class="tarifs"></div>
+            <div class="apropos__realisations">
+                <h2 class="section__titre">Nos Réalisations</h2>
+                <div id="carouselRealisations">
+                    <div class="item"><img src="IMAGE/1.jpeg" alt=""></div>
+                    <div class="item"><img src="IMAGE/2.jpeg" alt="Réalisation 3"></div>
+                    <div class="item"><img src="IMAGE/13.jpeg" alt="Réalisation 2"></div>
+                    <div class="item"><img src="IMAGE/4.jpeg" alt="Réalisation 5"></div>
+                    <div class="item"><img src="IMAGE/5.jpeg" alt="Réalisation 4"></div>
+                    <div class="item"><img src="IMAGE/6.jpeg" alt="Réalisation 6"></div>
+                    <div class="item"><img src="IMAGE/7.jpeg" alt="Réalisation 7"></div>
+                    <div class="item"><img src="IMAGE/8.jpeg" alt="Réalisation 8"></div>
+                    <div class="item"><img src="IMAGE/9.jpeg" alt="Réalisation 9"></div>
+                    <div class="item"><img src="IMAGE/10.jpeg" alt="Réalisation 10"></div>
+                    <div class="item"><img src="IMAGE/11.jpeg" alt="Réalisation 11"></div>
+                    <div class="item"><img src="IMAGE/12.jpeg" alt="Réalisation 12"></div>
+                </div>
+            </div>
+        </section>
+        <section id="reservation">
+            <h2 class="section__titre">Réservez Votre Séance</h2>
+            <p class="reservation__desc">Contactez nous pour capturer vos plus beaux moments</p>
+
+            <form class="reservation__form">
+                <div class="form__group">
+                    <label for="nomcomplet">Nom Complet</label>
+                    <div class="input__icon">
+                        <i class="fa-regular fa-user"></i>
+                        <input type="text" id="nomcomplet" name="nom" placeholder="Votre nom complet">
+                    </div>
+                </div>
+
+                <div class="form__group">
+                    <label for="email">Email</label>
+                    <div class="input__icon">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" id="email" name="email" placeholder="Votre email">
+                    </div>
+                </div>
+
+                <div class="form__group">
+                    <label for="telephone">Téléphone</label>
+                    <div class="input__icon">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="tel" id="telephone" name="telephone" placeholder="Votre numéro">
+                    </div>
+                </div>
+
+                <div class="form__group">
+                    <label>Type de prestation</label>
+                    <div class="choix">
+                        <button type="button" class="choix__btn active" data-prestation="studio">
+                            <i class="fa-solid fa-camera"></i> Studio
+                        </button>
+                        <button type="button" class="choix__btn" data-prestation="domicile">
+                            <i class="fa-solid fa-house"></i> Domicile
+                        </button>
+                        <button type="button" class="choix__btn" data-prestation="ceremonie">
+                            <i class="fa-solid fa-champagne-glasses"></i> Cérémonie
+                        </button>
+                        <button type="button" class="choix__btn" data-prestation="evenement">
+                            <i class="fa-solid fa-star"></i> Événement
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form__group">
+                    <label for="date">Date souhaitée</label>
+                    <div class="input__icon">
+                        <i class="fa-regular fa-calendar"></i>
+                        <input type="date" id="date" name="date">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn__reserver">
+                    <i class="fa-regular fa-calendar"></i> Confirmer la réservation
+                </button>
+            </form>
+        </section>
+    </main>
+    <footer>
+    <div class="footer__content">
+
+        <div class="footer__logo">
+            <div class="nav__logo">
+                <span id="focus">focus</span>
+                <span>events</span>
+            </div>
+            <p>Nous capturons vos plus beaux moments avec passion et professionnalisme.</p>
+        </div>
+
+        <div class="footer__nav">
+            <h2>Navigation</h2>
+            <a href="#accueil">Accueil</a>
+            <a href="#apropos">À Propos</a>
+            <a href="#reservation">Réservation</a>
+        </div>
+
+        <div class="footer__contact">
+            <h2>Contact</h2>
+            <p><i class="fa-solid fa-phone"></i> +221 77 000 00 00</p>
+            <p><i class="fa-regular fa-envelope"></i> contact@focusevents.sn</p>
+            <p><i class="fa-solid fa-location-dot"></i> Touba, Sénégal</p>
+            <div class="footer__social">
+                <a href="https://www.instagram.com/focus_evens_?igsh=ZzdvdDJodjN1OTUy&utm_source=qr"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@focusevents4?_r=1&_t=ZS-99tTSxiSpPk"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer__copyright">
+        <p>© 2024 Focus Events. Tous droits réservés.</p>
+    </div>
+</footer>
+    <a href="#reservation" class="btn__float">
+        <i class="fa-regular fa-calendar"></i> <span>Réserver</span>
+    </a>
+</body>
+
+</html>
