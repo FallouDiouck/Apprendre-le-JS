@@ -232,8 +232,7 @@ let onReady = function () {
 
     new Carousel(document.querySelector('#carouselRealisations'), {
         slidesToScroll: 1,
-        slidesVisible: 3,
-        loop: true
+        slidesVisible: 3
     })
 
     const choixBtns = document.querySelectorAll('.choix__btn')
@@ -282,7 +281,9 @@ let onReady = function () {
     .footer__logo,
     .footer__nav,
     .footer__contact,
-    .hero__content,
+    .hero__content h1,
+    .hero__buttons,
+    .hero__text,
     .section__titre
 `).forEach(el => {
         el.classList.add('apparaitre')
@@ -311,23 +312,23 @@ let onReady = function () {
         })
 
         const popup = document.getElementById('popup')
-const popupMessage = document.getElementById('popupMessage')
-const popupClose = document.getElementById('popupClose')
+        const popupMessage = document.getElementById('popupMessage')
+        const popupClose = document.getElementById('popupClose')
 
-// Ferme le popup
-popupClose.addEventListener('click', () => {
-    popup.classList.remove('visible')
-})
+        // Ferme le popup
+        popupClose.addEventListener('click', () => {
+            popup.classList.remove('visible')
+        })
 
-// Dans le submit
-if (reponse.ok) {
-    popupMessage.textContent = 'Réservation confirmée ! Nous vous contacterons bientôt.'
-    popup.classList.add('visible')
-    form.reset()
-} else {
-    popupMessage.textContent = 'Une erreur est survenue. Veuillez réessayer !'
-    popup.classList.add('visible')
-}
+        // Dans le submit
+        if (reponse.ok) {
+            popupMessage.textContent = 'Réservation confirmée ! Nous vous contacterons bientôt.'
+            popup.classList.add('visible')
+            form.reset()
+        } else {
+            popupMessage.textContent = 'Une erreur est survenue. Veuillez réessayer !'
+            popup.classList.add('visible')
+        }
     })
 
     // ── SCROLLSPY ──
@@ -357,8 +358,8 @@ if (reponse.ok) {
 
     sections.forEach(section => scrollspy.observe(section))
 
-  document.querySelector('.footer__copyright').textContent =
-  `© ${new Date().getFullYear()} Focus Events. Tous droits réservés.`
+    document.querySelector('.footer__copyright').textContent =
+        `© ${new Date().getFullYear()} Focus Events. Tous droits réservés.`
 }
 
 if (document.readyState !== 'loading') {

@@ -223,7 +223,7 @@ let onReady = function () {
     new Carousel(document.querySelector('#carousel1'), {
         slidesToScroll: 3,
         slidesVisible: 3,
-        loop: true
+        loop: false
     })
 
     new Carousel(document.querySelector('#carousel2'), {
@@ -235,7 +235,7 @@ let onReady = function () {
 
     new Carousel(document.querySelector('#carousel3'), {
         slidesToScroll: 1,
-        slidesVisible: 1,
+        slidesVisible: 1
     })
 }
 
