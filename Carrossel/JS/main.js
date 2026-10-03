@@ -1,3 +1,78 @@
+/**
+ * Permet de rajouter la navigation tactile pour le carousel
+ */
+class CarouselTouchPlugin {
+
+    /**
+     * 
+     * @param {Carousel} carousel 
+     */
+    constructor(carousel) {
+        carousel.container.addEventListener('dragstart', e => e.preventDefault())
+        carousel.container.addEventListener('mousedown', this.startDrag.bind(this))
+        carousel.container.addEventListener('touchstart', this.startDrag.bind(this))
+        window.addEventListener('mousemove', this.drag.bind(this))
+        window.addEventListener('touchmove', this.drag.bind(this))
+        window.addEventListener('touchend', this.endDrag.bind(this))
+        window.addEventListener('mouseup', this.endDrag.bind(this))
+        window.addEventListener('touchcancel', this.endDrag.bind(this))
+        this.carousel = carousel
+    }
+
+    /**
+     * Demarre le deplacement au touvhe
+     * @param {MouseEvent|TouchEvent} e 
+     */
+    startDrag(e) {
+        if (e.touches) {
+            if (e.touches > 1) {
+                return
+            } else {
+                e = e.touches[0]
+            }
+        }
+
+        this.origin = { x: e.screenX, y: e.screenY }
+        this.width = this.carousel.containerWidth
+        this.carousel.disableTransition()
+    }
+
+    /**
+     * Deplacement
+     * @param {MouseEvent|TouchEvent} e 
+     */
+    drag(e) {
+        if (this.origin) {
+            let point = e.touches ? e.touches[0] : e
+            let translate = { x: point.screenX - this.origin.x, y: point.screenY - this.origin.y }
+            let baseTranslate = this.carousel.currentItem * (-100) / this.carousel.items.length
+            this.lastTranslate = translate
+            this.carousel.translate(baseTranslate + 100 * translate.x / this.width)
+        }
+    }
+
+    /**
+     * Fin du deplacement
+     * @param {MouseEvent|TouchEvent} 
+     */
+    endDrag() {
+        if (this.origin && this.lastTranslate) {
+            this.carousel.enableTransition()
+            if (Math.abs(this.lastTranslate.x / this.carousel.carouselWidth) > 0.2) {
+                if (this.lastTranslate.x < 0) {
+                    this.carousel.next()
+                } else {
+                    this.carousel.prev()
+                }
+            } else {
+                this.carousel.gotoItem(this.carousel.currentItem)
+            }
+        }
+        this.origin = null
+    }
+}
+
+
 class Carousel {
 
     /**
@@ -25,6 +100,7 @@ class Carousel {
         this.isMobile = false
         this.currentItem = 0
         this.offset = 0
+        this.moveCallbacks = []
 
         //Modification du DOM
         this.root = this.createDivWithClass('carousel')
@@ -32,20 +108,22 @@ class Carousel {
         this.root.setAttribute('tabindex', '0')
         this.root.appendChild(this.container)
         this.element.appendChild(this.root)
-        this.moveCallbacks = []
         this.items = children.map((child) => {
             let item = this.createDivWithClass('carousel__item')
             item.appendChild(child)
             return item
         })
         if (this.option.infinite) {
-            this.offset =this.option.slidesVisible * 2 - 1
+            this.offset = this.option.slidesVisible + this.option.slidesVisible
+            if (this.offset > children.length) {
+                console.error("Vous n'avez pas assez d'elements dans le caroussel", element)
+            }
             this.items = [
-            ...this.items.slice(this.items.length - this.offset).map(item => item.cloneNode(true)),
-            ...this.items,
-            ...this.items.slice(0, this.offset).map(item => item.cloneNode(true)),
+                ...this.items.slice(this.items.length - this.offset).map(item => item.cloneNode(true)),
+                ...this.items,
+                ...this.items.slice(0, this.offset).map(item => item.cloneNode(true)),
             ]
-            this.gotoItem(this.offset,false)
+            this.gotoItem(this.offset, false)
         }
         this.items.forEach(item => this.container.appendChild(item))
         this.setStyle()
@@ -66,9 +144,11 @@ class Carousel {
                 this.prev()
             }
         })
-        if(this.option.infinite){
+        if (this.option.infinite) {
             this.container.addEventListener('transitionend', this.resetInfinite.bind(this))
         }
+
+        new CarouselTouchPlugin(this)
     }
 
     /**
@@ -120,9 +200,18 @@ class Carousel {
         this.onMove(index => {
             let count = this.items.length - 2 * this.offset
             buttons.forEach(btn => btn.classList.remove('carousel__pagination__button--active'))
-            let activeIndex = Math.floor(((index - this.offset) % count) / this.option.slidesToScroll)
+
+            let realIndex = index - this.offset
+            if (realIndex < 0) realIndex += count
+            if (realIndex >= count) realIndex -= count
+
+            let activeIndex = Math.floor(realIndex / this.option.slidesToScroll)
             buttons[activeIndex] && buttons[activeIndex].classList.add('carousel__pagination__button--active')
         })
+    }
+
+    translate(percent) {
+        this.container.style.transform = 'translate3d(' + percent + '%, 0, 0)'
     }
 
     next() {
@@ -154,14 +243,15 @@ class Carousel {
             }
         }
         let translateX = index * -100 / this.items.length
-        if(animation === false){
-            this.container.style.transition = 'none'
+        if (animation === false) {
+            this.disableTransition()
         }
-        this.container.style.transform = 'translate3d(' + translateX + '%, 0, 0)'
-        this,this.container.offsetHeight  //force repaint
+
+        this.translate(translateX)
+        this, this.container.offsetHeight  //force repaint
         this.currentItem = index
-        if(animation === false){
-            this.container.style.transition = ''
+        if (animation === false) {
+            this.enableTransition()
         }
         this.moveCallbacks.forEach(cb => cb(index))
     }
@@ -169,10 +259,10 @@ class Carousel {
     /**
      * Deplace le container pour donner l'impression d'un slide infinie
      */
-    resetInfinite(){
-        if(this.currentItem <= this.option.slidesToScroll){
+    resetInfinite() {
+        if (this.currentItem <= this.option.slidesToScroll) {
             this.gotoItem(this.currentItem + (this.items.length - 2 * this.offset), false)
-        } else if (this.currentItem >= this.option.slidesToScroll){
+        } else if (this.currentItem >= this.items.length - this.offset) {
             this.gotoItem(this.currentItem - (this.items.length - 2 * this.offset), false)
         }
     }
@@ -201,6 +291,14 @@ class Carousel {
         return div
     }
 
+    disableTransition() {
+        this.container.style.transition = 'none'
+    }
+
+    enableTransition() {
+        this.container.style.transition = ''
+    }
+
     /**
      * 
      * @returns {number}
@@ -214,6 +312,20 @@ class Carousel {
      */
     get slidesVisible() {
         return this.isMobile ? 1 : this.option.slidesVisible
+    }
+
+    /**
+     * @returns {number}
+     */
+    get containerWidth() {
+        return this.container.offsetWidth
+    }
+
+    /**
+     * @returns {number}
+     */
+    get carouselWidth() {
+        return this.root.offsetWidth
     }
 
 }
